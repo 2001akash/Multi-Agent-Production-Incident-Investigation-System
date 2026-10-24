@@ -1,0 +1,220 @@
+{
+  "multi_agent": {
+    "average_root_cause_accuracy": 1.0,
+    "average_evidence_grounding": 0.925,
+    "average_tool_call_count": 10.6,
+    "average_latency_seconds": 0.00328980000001593,
+    "average_token_estimate": 2294,
+    "results": [
+      {
+        "incident_id": "INC-001",
+        "predicted_root_cause": "cache warm-up regression in payment service",
+        "actual_root_cause": "cache warm-up regression in payment service",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 1.0,
+        "tool_call_count": 11,
+        "latency_seconds": 0.0039046000001690118,
+        "token_estimate": 2390
+      },
+      {
+        "incident_id": "INC-002",
+        "predicted_root_cause": "search index restart loop caused stale shards to be queried",
+        "actual_root_cause": "search index restart loop caused stale shards to be queried",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 1.0,
+        "tool_call_count": 10,
+        "latency_seconds": 0.003158900000016729,
+        "token_estimate": 2300
+      },
+      {
+        "incident_id": "INC-003",
+        "predicted_root_cause": "rate limiting threshold too low in edge gateway",
+        "actual_root_cause": "rate limiting threshold too low in edge gateway",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.95,
+        "tool_call_count": 11,
+        "latency_seconds": 0.0051339999999981956,
+        "token_estimate": 2350
+      },
+      {
+        "incident_id": "INC-004",
+        "predicted_root_cause": "Kafka consumer lag from deserialization bug after schema change",
+        "actual_root_cause": "Kafka consumer lag from deserialization bug after schema change",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.95,
+        "tool_call_count": 10,
+        "latency_seconds": 0.00329409999994823,
+        "token_estimate": 2260
+      },
+      {
+        "incident_id": "INC-005",
+        "predicted_root_cause": "token issuer mismatch in migrated identity provider route",
+        "actual_root_cause": "token issuer mismatch in migrated identity provider route",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.9,
+        "tool_call_count": 11,
+        "latency_seconds": 0.003176100000018778,
+        "token_estimate": 2310
+      },
+      {
+        "incident_id": "INC-006",
+        "predicted_root_cause": "timezone conversion bug in inventory sync job",
+        "actual_root_cause": "timezone conversion bug in inventory sync job",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.9,
+        "tool_call_count": 10,
+        "latency_seconds": 0.0028081999998903484,
+        "token_estimate": 2220
+      },
+      {
+        "incident_id": "INC-007",
+        "predicted_root_cause": "bulk export job starved queue workers by consuming CPU",
+        "actual_root_cause": "bulk export job starved queue workers by consuming CPU",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.85,
+        "tool_call_count": 11,
+        "latency_seconds": 0.002504499999986365,
+        "token_estimate": 2270
+      },
+      {
+        "incident_id": "INC-008",
+        "predicted_root_cause": "aggregator job timezone shift caused missing partition window",
+        "actual_root_cause": "aggregator job timezone shift caused missing partition window",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.9,
+        "tool_call_count": 10,
+        "latency_seconds": 0.0029853999999431835,
+        "token_estimate": 2220
+      },
+      {
+        "incident_id": "INC-009",
+        "predicted_root_cause": "feature flag targeting used the wrong customer segment key",
+        "actual_root_cause": "feature flag targeting used the wrong customer segment key",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.95,
+        "tool_call_count": 11,
+        "latency_seconds": 0.0034777000000758562,
+        "token_estimate": 2350
+      },
+      {
+        "incident_id": "INC-010",
+        "predicted_root_cause": "query planner regression created poor index use on order status table",
+        "actual_root_cause": "query planner regression created poor index use on order status table",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.85,
+        "tool_call_count": 11,
+        "latency_seconds": 0.0024545000001126027,
+        "token_estimate": 2270
+      }
+    ]
+  },
+  "single_agent": {
+    "average_root_cause_accuracy": 0.8,
+    "average_evidence_grounding": 0.6777777777777778,
+    "average_tool_call_count": 5,
+    "average_latency_seconds": 6.550999996761675e-05,
+    "average_token_estimate": 1125,
+    "results": [
+      {
+        "incident_id": "INC-001",
+        "predicted_root_cause": "cache warm-up regression in payment service",
+        "actual_root_cause": "cache warm-up regression in payment service",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 0.00013439999997899577,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-002",
+        "predicted_root_cause": "search index restart loop caused stale shards to be queried",
+        "actual_root_cause": "search index restart loop caused stale shards to be queried",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 7.019999998192361e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-003",
+        "predicted_root_cause": "rate limiting threshold too low in edge gateway",
+        "actual_root_cause": "rate limiting threshold too low in edge gateway",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 6.349999989652133e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-004",
+        "predicted_root_cause": "Kafka consumer lag from deserialization bug after schema change",
+        "actual_root_cause": "Kafka consumer lag from deserialization bug after schema change",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 5.8299999864175334e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-005",
+        "predicted_root_cause": "token issuer mismatch in migrated identity provider route",
+        "actual_root_cause": "token issuer mismatch in migrated identity provider route",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 5.5699999848002335e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-006",
+        "predicted_root_cause": "warehouse scanner downtime",
+        "actual_root_cause": "timezone conversion bug in inventory sync job",
+        "root_cause_accuracy": 0.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 5.030000011174707e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-007",
+        "predicted_root_cause": "database deadlock",
+        "actual_root_cause": "bulk export job starved queue workers by consuming CPU",
+        "root_cause_accuracy": 0.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 4.930000000058499e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-008",
+        "predicted_root_cause": "aggregator job timezone shift caused missing partition window",
+        "actual_root_cause": "aggregator job timezone shift caused missing partition window",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 6.379999990713259e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-009",
+        "predicted_root_cause": "feature flag targeting used the wrong customer segment key",
+        "actual_root_cause": "feature flag targeting used the wrong customer segment key",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 6.000000007588824e-05,
+        "token_estimate": 1125
+      },
+      {
+        "incident_id": "INC-010",
+        "predicted_root_cause": "query planner regression created poor index use on order status table",
+        "actual_root_cause": "query planner regression created poor index use on order status table",
+        "root_cause_accuracy": 1.0,
+        "evidence_grounding": 0.6777777777777778,
+        "tool_call_count": 5,
+        "latency_seconds": 4.9600000011196244e-05,
+        "token_estimate": 1125
+      }
+    ]
+  }
+}

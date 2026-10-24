@@ -1,0 +1,8 @@
+AI coding assistant transcript for Orange Invest Assignment FE
+
+1. PDF was reviewed and the assignment requirements were extracted.
+2. The project was created with a multi-agent Python implementation for incident investigation.
+3. The system includes orchestrator, observability, dependency, reasoning, critic, and reporting agents.
+4. Synthetic incident dataset, evaluation harness, and tests were added.
+5. README and technical note were produced.
+6. Automated validation ran successfully with pytest.
