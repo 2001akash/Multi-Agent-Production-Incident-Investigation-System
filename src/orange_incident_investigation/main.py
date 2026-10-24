@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
+import os
+import sys
 
 from .agents import Orchestrator
 from .dataset import INCIDENTS
@@ -15,6 +16,8 @@ def run_demo() -> None:
     report = Orchestrator(incident).investigate()
     print(json.dumps({
         "incident_id": report.incident_id,
+        "llm_provider": report.llm_provider,
+        "llm_model": report.llm_model,
         "confidence": round(report.confidence, 3),
         "inconclusive": report.inconclusive,
         "ranked_hypotheses": [
@@ -40,8 +43,8 @@ def run_evaluation() -> None:
     print(f"Single-agent average tool calls: {single['average_tool_call_count']:.2f}")
     print(f"Multi-agent latency (s): {multi['average_latency_seconds']:.3f}")
     print(f"Single-agent latency (s): {single['average_latency_seconds']:.3f}")
-    print(f"Multi-agent tokens: {multi['average_token_estimate']:.0f}")
-    print(f"Single-agent tokens: {single['average_token_estimate']:.0f}")
+    print(f"Multi-agent tokens ({multi['token_count_source']}): {multi['average_token_count']:.0f}")
+    print(f"Single-agent tokens ({single['token_count_source']}): {single['average_token_count']:.0f}")
 
 
 def main() -> None:
@@ -49,18 +52,29 @@ def main() -> None:
     parser.add_argument("--demo", action="store_true", help="Run a demo incident investigation")
     parser.add_argument("--evaluate", action="store_true", help="Run the synthetic evaluation")
     parser.add_argument("--web", action="store_true", help="Start the local web interface")
+    parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="Disable Groq and use the local deterministic fallback",
+    )
     parser.add_argument("--host", default="127.0.0.1", help="Web interface bind address")
     parser.add_argument("--port", type=int, default=8000, help="Web interface port")
     args = parser.parse_args()
+    if args.offline:
+        os.environ["ORANGE_LLM_DISABLED"] = "1"
 
-    if args.web:
-        run_web_server(host=args.host, port=args.port)
-    elif args.demo:
-        run_demo()
-    elif args.evaluate:
-        run_evaluation()
-    else:
-        run_demo()
+    try:
+        if args.web:
+            run_web_server(host=args.host, port=args.port)
+        elif args.demo:
+            run_demo()
+        elif args.evaluate:
+            run_evaluation()
+        else:
+            run_demo()
+    except RuntimeError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        raise SystemExit(1) from None
 
 
 if __name__ == "__main__":

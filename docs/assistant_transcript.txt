@@ -5,4 +5,8 @@ AI coding assistant transcript for Orange Invest Assignment FE
 3. The system includes orchestrator, observability, dependency, reasoning, critic, and reporting agents.
 4. Synthetic incident dataset, evaluation harness, and tests were added.
 5. README and technical note were produced.
-6. Automated validation ran successfully with pytest.
+6. A lightweight local web interface was added.
+7. Groq API support was added with API-key configuration through an ignored .env file.
+8. The orchestrator routes evidence tools, the critic can request one bounded follow-up pass,
+   and ground-truth labels remain evaluation-only.
+9. Automated tests validate routing, evidence citations, and evaluation-label isolation.

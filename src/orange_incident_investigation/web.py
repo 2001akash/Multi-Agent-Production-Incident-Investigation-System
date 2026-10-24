@@ -86,6 +86,7 @@ _INDEX_HTML = """<!doctype html>
       const badge = make("span", data.inconclusive ? "Inconclusive" : `Confidence ${(data.confidence * 100).toFixed(0)}%`, data.inconclusive ? "badge warning" : "badge");
       titleRow.append(badge);
       top.append(titleRow, make("p", data.evidence_summary, "muted"));
+      top.append(make("p", `Provider: ${data.llm_provider}${data.llm_model ? ` · ${data.llm_model}` : ""}`, "muted"));
       const hypothesisList = make("div");
       for (const h of data.ranked_hypotheses || []) {
         const item = make("article", undefined, "hypothesis");
@@ -215,6 +216,8 @@ class IncidentRequestHandler(BaseHTTPRequestHandler):
             self._send_json(200, _serialize_report(payload["incident_id"]))
         except KeyError:
             self._send_json(404, {"error": "Unknown incident_id"})
+        except RuntimeError as exc:
+            self._send_json(502, {"error": str(exc)})
 
 
 def run_web_server(host: str = "127.0.0.1", port: int = 8000) -> None:

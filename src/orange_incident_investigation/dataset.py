@@ -9,7 +9,6 @@ INCIDENTS: list[IncidentCase] = [
         title="API latency spike",
         report="Orders API latency increased 5x after deployment, error rate rose from 0.1% to 4%.",
         ground_truth="cache warm-up regression in payment service",
-        possible_causes=["cache warm-up regression in payment service", "database deadlock", "DNS issue", "edge CDN saturation"],
         logs=[
             "payment-service: cache miss rate increased to 88% after 11:42 UTC",
             "gateway: p95 latency rising from 200ms to 1100ms",
@@ -41,7 +40,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Customer search outage",
         report="Search results return timeout across all regions after a release candidate was promoted.",
         ground_truth="search index restart loop caused stale shards to be queried",
-        possible_causes=["search index restart loop caused stale shards to be queried", "database failover", "auth token rotation", "feature flag rollout"],
         logs=[
             "search-index: shard health degraded after restart; 14 shards pending recovery",
             "api-gateway: upstream timeouts on /search with 5-second fallback",
@@ -72,7 +70,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Checkout 429 storms",
         report="Customers are seeing repeated 429s on payment steps after a config change.",
         ground_truth="rate limiting threshold too low in edge gateway",
-        possible_causes=["rate limiting threshold too low in edge gateway", "database lock", "bot attack", "third-party payment outage"],
         logs=[
             "edge-gateway: rate-limit exceeded for checkout user-agent pattern",
             "payment-service: healthy, no retry storm from backend",
@@ -103,7 +100,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Fraud dataset sync delay",
         report="Fraud scoring is stale by 40 minutes; downstream decisions use outdated risk score.",
         ground_truth="Kafka consumer lag from deserialization bug after schema change",
-        possible_causes=["Kafka consumer lag from deserialization bug after schema change", "database vacuum issue", "cache TTL misconfig", "auth token expiry"],
         logs=[
             "fraud-processor: DESERIALIZATION_ERROR after schema update from v6 to v7",
             "kafka-consumer: lag reached 12 million events, offsets not advancing",
@@ -133,7 +129,6 @@ INCIDENTS: list[IncidentCase] = [
         title="User login failures after IAM migration",
         report="Users cannot log in after a migration but account creation still works.",
         ground_truth="token issuer mismatch in migrated identity provider route",
-        possible_causes=["token issuer mismatch in migrated identity provider route", "database schema drift", "certificate rotation", "mobile app version mismatch"],
         logs=[
             "auth-service: invalid issuer in JWT validation after migration",
             "oidc-proxy: issuer hostname changed from login.example.com to auth.example.com",
@@ -163,7 +158,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Inventory mismatch in marketplace",
         report="Inventory counts are inconsistent between web and warehouse after a release.",
         ground_truth="timezone conversion bug in inventory sync job",
-        possible_causes=["timezone conversion bug in inventory sync job", "warehouse scanner downtime", "payment mismatch", "CDN caching bug"],
         logs=[
             "inventory-sync: update timestamps interpreted in UTC when warehouse sends local time",
             "warehouse reports 3,200 items added; UI still shows 1,200",
@@ -192,7 +186,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Messaging queue lag",
         report="SMS notifications are delayed for 15 minutes around business hours.",
         ground_truth="bulk export job starved queue workers by consuming CPU",
-        possible_causes=["bulk export job starved queue workers by consuming CPU", "database deadlock", "DNS issue", "email provider outage"],
         logs=[
             "sms-worker: queue depth rising steadily; worker CPU hit 99%",
             "batch-export: 12 long-running exports running concurrently",
@@ -221,7 +214,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Analytics dashboard stale data",
         report="Analytics dashboard shows stale daily totals for the last 2 hours even though sources are healthy.",
         ground_truth="aggregator job timezone shift caused missing partition window",
-        possible_causes=["aggregator job timezone shift caused missing partition window", "warehouse DB failover", "web cache issue", "billing outage"],
         logs=[
             "analytics-agg: scheduled run skipped partitions for UTC-5 window",
             "pipeline: last successful run at 01:45; current run at 03:00 has no new data",
@@ -250,7 +242,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Refund errors after feature flag rollout",
         report="Refund requests fail intermittently after a new rollout, with only some customer cohorts affected.",
         ground_truth="feature flag targeting used the wrong customer segment key",
-        possible_causes=["feature flag targeting used the wrong customer segment key", "payment provider bug", "certificate expiry", "database read replica lag"],
         logs=[
             "refund-service: feature flag evaluation returned false for allowed cohort; other cohorts unaffected",
             "event-stream: customer segment key mismatch in targeting config",
@@ -280,7 +271,6 @@ INCIDENTS: list[IncidentCase] = [
         title="Order processing slowdown",
         report="Order throughput slowed gradually after a release, but no full outages are observed.",
         ground_truth="query planner regression created poor index use on order status table",
-        possible_causes=["query planner regression created poor index use on order status table", "worker autoscaling issue", "message bus latency", "storage contention"],
         logs=[
             "orders-db: plan cache invalidated frequently after upgrade; query time out observed for status table",
             "orders-api: p95 latency increased from 450ms to 1430ms over 30 minutes",

@@ -10,25 +10,37 @@ from .baseline import SingleAgentBaseline
 from .dataset import INCIDENTS
 
 
+def _evidence_grounding(report, available_evidence: list[str]) -> float:
+    citations = list(report.facts)
+    for hypothesis in report.ranked_hypotheses:
+        citations.extend(hypothesis.support)
+        citations.extend(hypothesis.contradictions)
+    if not citations:
+        return 0.0
+    evidence_set = set(available_evidence)
+    grounded_count = sum(citation in evidence_set for citation in citations)
+    return grounded_count / len(citations)
+
+
 def run_incident_against_multi_agent(incident):
     start = time.perf_counter()
     orchestrator = Orchestrator(incident)
     report = orchestrator.investigate()
     latency = time.perf_counter() - start
-    tool_count = 0
-    for key in ["logs", "metrics", "deployments", "dependencies", "historical_incidents"]:
-        if key in incident.tool_failures:
-            tool_count += 1
-    tool_count += 10
     return {
         "incident_id": incident.incident_id,
         "predicted_root_cause": report.ranked_hypotheses[0].cause if report.ranked_hypotheses else "unknown",
         "actual_root_cause": incident.ground_truth,
         "root_cause_accuracy": 1.0 if report.ranked_hypotheses and report.ranked_hypotheses[0].cause == incident.ground_truth else 0.0,
-        "evidence_grounding": min(1.0, 0.5 + len(report.facts) / 20.0),
-        "tool_call_count": tool_count,
+        "evidence_grounding": _evidence_grounding(
+            report,
+            [item.summary for item in orchestrator.state.evidence],
+        ),
+        "tool_call_count": orchestrator.tool_call_count,
         "latency_seconds": latency,
-        "token_estimate": max(300, int(1000 + len(report.facts) * 40 + tool_count * 90)),
+        "token_count": orchestrator.llm.total_tokens,
+        "token_count_source": "groq_api" if orchestrator.llm.enabled else "llm_disabled",
+        "llm_model": orchestrator.llm.model if orchestrator.llm.enabled else None,
     }
 
 
@@ -38,16 +50,20 @@ def run_incident_against_baseline(incident):
     report = baseline.investigate()
     latency = time.perf_counter() - start
     predicted = report.ranked_hypotheses[0].cause if report.ranked_hypotheses else "unknown"
-    tool_count = 5
     return {
         "incident_id": incident.incident_id,
         "predicted_root_cause": predicted,
         "actual_root_cause": incident.ground_truth,
         "root_cause_accuracy": 1.0 if predicted == incident.ground_truth else 0.0,
-        "evidence_grounding": min(1.0, 0.4 + len(report.facts) / 18.0),
-        "tool_call_count": tool_count,
+        "evidence_grounding": _evidence_grounding(
+            report,
+            [item.summary for item in baseline.state.evidence],
+        ),
+        "tool_call_count": 5,
         "latency_seconds": latency,
-        "token_estimate": int(600 + len(report.facts) * 25 + tool_count * 80),
+        "token_count": baseline.llm.total_tokens,
+        "token_count_source": "groq_api" if baseline.llm.enabled else "llm_disabled",
+        "llm_model": baseline.llm.model if baseline.llm.enabled else None,
     }
 
 
@@ -61,7 +77,9 @@ def evaluate_systems() -> dict[str, object]:
             "average_evidence_grounding": statistics.mean(item["evidence_grounding"] for item in multi_agent),
             "average_tool_call_count": statistics.mean(item["tool_call_count"] for item in multi_agent),
             "average_latency_seconds": statistics.mean(item["latency_seconds"] for item in multi_agent),
-            "average_token_estimate": statistics.mean(item["token_estimate"] for item in multi_agent),
+            "average_token_count": statistics.mean(item["token_count"] for item in multi_agent),
+            "token_count_source": multi_agent[0]["token_count_source"],
+            "llm_model": multi_agent[0]["llm_model"],
             "results": multi_agent,
         },
         "single_agent": {
@@ -69,7 +87,9 @@ def evaluate_systems() -> dict[str, object]:
             "average_evidence_grounding": statistics.mean(item["evidence_grounding"] for item in single_agent),
             "average_tool_call_count": statistics.mean(item["tool_call_count"] for item in single_agent),
             "average_latency_seconds": statistics.mean(item["latency_seconds"] for item in single_agent),
-            "average_token_estimate": statistics.mean(item["token_estimate"] for item in single_agent),
+            "average_token_count": statistics.mean(item["token_count"] for item in single_agent),
+            "token_count_source": single_agent[0]["token_count_source"],
+            "llm_model": single_agent[0]["llm_model"],
             "results": single_agent,
         },
     }

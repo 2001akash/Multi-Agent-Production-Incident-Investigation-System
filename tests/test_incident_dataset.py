@@ -8,10 +8,10 @@ def test_dataset_has_ten_incidents() -> None:
     assert len(INCIDENTS) == 10
 
 
-def test_incident_ground_truth_is_present() -> None:
+def test_incident_ground_truth_is_only_an_evaluation_label() -> None:
     for incident in INCIDENTS:
         assert incident.ground_truth
-        assert incident.ground_truth in incident.possible_causes
+        assert not hasattr(incident, "possible_causes")
 
 
 def test_tool_registry_handles_failures() -> None:

@@ -24,7 +24,7 @@ def test_unknown_incident_is_rejected() -> None:
 
 def test_evaluation_truth_does_not_influence_hypothesis_ranking() -> None:
     incident = INCIDENTS[0]
-    changed_truth = replace(incident, ground_truth=incident.possible_causes[-1])
+    changed_truth = replace(incident, ground_truth="different label used only for evaluation")
 
     multi_original = Orchestrator(incident).investigate()
     multi_changed = Orchestrator(changed_truth).investigate()

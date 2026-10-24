@@ -30,7 +30,6 @@ class IncidentCase:
     title: str
     report: str
     ground_truth: str
-    possible_causes: list[str]
     logs: list[str]
     metrics: list[str]
     deployments: list[str]
@@ -67,3 +66,5 @@ class InvestigationReport:
     recommended_actions: list[str]
     inconclusive: bool = False
     evidence_summary: str = ""
+    llm_provider: str = "local deterministic fallback"
+    llm_model: str | None = None
