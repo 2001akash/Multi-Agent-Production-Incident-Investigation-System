@@ -4,7 +4,7 @@ This project implements a multi-agent production incident investigation system a
 
 ## Quick start
 
-Run these commands from the project root, `C:\Users\hp\OneDrive - Lovely Professional University\Desktop\Orange`
+Run these commands from the project root,
 (the directory containing `pyproject.toml`), not from inside `src`.
 
 ```bash
