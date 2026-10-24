@@ -1,12 +1,24 @@
-AI coding assistant transcript for Orange Invest Assignment FE
+AI assistant transcript for the Orange Invest assignment
 
-1. PDF was reviewed and the assignment requirements were extracted.
-2. The project was created with a multi-agent Python implementation for incident investigation.
-3. The system includes orchestrator, observability, dependency, reasoning, critic, and reporting agents.
-4. Synthetic incident dataset, evaluation harness, and tests were added.
-5. README and technical note were produced.
-6. A lightweight local web interface was added.
-7. Groq API support was added with API-key configuration through an ignored .env file.
-8. The orchestrator routes evidence tools, the critic can request one bounded follow-up pass,
-   and ground-truth labels remain evaluation-only.
-9. Automated tests validate routing, evidence citations, and evaluation-label isolation.
+I used an AI coding assistant while working through this assignment. I first went
+through the assignment PDF and used it to decide what the project needed.
+
+With the assistant's help, I built a Python incident investigation project. It has
+an orchestrator and separate observability, dependency, reasoning, critic, and
+reporting agents. I also added ten synthetic incidents, a single-agent comparison,
+an evaluation script, and a small local web UI.
+
+I connected the reasoning flow to Groq. The project reads the API key from my local
+.env file, which is excluded from Git. The agents use the incident evidence to
+suggest causes; the expected answers in the dataset are only used when scoring
+the evaluation and are not given to the agents.
+
+I worked through several issues during development, including Groq access and
+rate limits, evaluation scores, and the web UI's offline mode. I added tests for
+the main behavior and used them to check changes. The UI can run with Groq or,
+when started with --offline, with a local fallback. The offline results are not
+LLM-generated.
+
+The assistant helped me write and debug parts of the code, but I still need to
+understand the design and be able to explain it. The project uses simulated
+incident evidence; it is not connected to a real production monitoring system.
