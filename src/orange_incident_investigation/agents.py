@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from concurrent.futures import ThreadPoolExecutor
+import os
 import re
 from typing import Any, Protocol
 
@@ -180,12 +181,16 @@ class ReasoningAgent:
                 raw_confidence = item.get("confidence", 0.0)
                 if not isinstance(raw_confidence, (int, float)):
                     continue
-                support = [summary for summary in _string_list(item.get("support")) if summary in allowed_evidence]
-                contradictions = [
+                support = list(dict.fromkeys(
+                    summary
+                    for summary in _string_list(item.get("support"))
+                    if summary in allowed_evidence
+                ))  
+                contradictions = list(dict.fromkeys(
                     summary
                     for summary in _string_list(item.get("contradictions"))
                     if summary in allowed_evidence
-                ]
+                ))
                 if not support:
                     continue
                 hypotheses.append(
@@ -333,17 +338,29 @@ class ReportingAgent:
             "The investigation integrated observability, dependency, and historical evidence to rank causes. "
             if not inconclusive else "Evidence was insufficient to form a high-confidence root cause."
         )
+        if os.getenv("ORANGE_DEBUG_LLM_REPORT") == "1":
+            print("DEBUG reasoning_result:", self.state.reasoning_result)
+            print("DEBUG LLM model:", self.state.llm_model)
         if self.state.reasoning_result is not None:
             result = self.state.reasoning_result
             allowed_evidence = {item.summary for item in self.state.evidence}
             facts = [
-                fact for fact in _string_list(result.get("facts"))
+                fact
+                for fact in _string_list(result.get("facts"))
                 if fact in allowed_evidence
-            ][:10] or facts
-            assumptions = _string_list(result.get("assumptions"))[:10] or assumptions
-            recommended_actions = _string_list(result.get("recommended_actions"))[:10] or recommended_actions
-            inconclusive = bool(result.get("inconclusive", inconclusive))
-            evidence_summary = str(result.get("evidence_summary", evidence_summary))[:1000]
+            ][:10]
+            assumptions = _string_list(result.get("assumptions"))[:10]
+            if not assumptions:
+                raise RuntimeError("Groq reasoning response did not include assumptions.")
+            recommended_actions = _string_list(result.get("recommended_actions"))[:10]
+            if not recommended_actions:
+                raise RuntimeError(
+                    "Groq reasoning response did not include incident-specific recommended actions."
+                )
+            inconclusive = result["inconclusive"]
+            evidence_summary = result["evidence_summary"].strip()[:1000]
+            if not evidence_summary:
+                raise RuntimeError("Groq reasoning response did not include an evidence summary.")
         return InvestigationReport(
             incident_id=self.incident.incident_id,
             ranked_hypotheses=ranked[:3],

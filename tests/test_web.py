@@ -22,6 +22,12 @@ def test_unknown_incident_is_rejected() -> None:
         _serialize_report("INC-UNKNOWN")
 
 
+def test_report_requires_groq_unless_offline_is_explicit(monkeypatch) -> None:
+    monkeypatch.delenv("ORANGE_LLM_DISABLED", raising=False)
+    with pytest.raises(RuntimeError, match="Groq is not enabled"):
+        _serialize_report("INC-001")
+
+
 def test_evaluation_truth_does_not_influence_hypothesis_ranking() -> None:
     incident = INCIDENTS[0]
     changed_truth = replace(incident, ground_truth="different label used only for evaluation")

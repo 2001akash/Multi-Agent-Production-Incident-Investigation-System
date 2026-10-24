@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import asdict
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any
@@ -86,7 +87,10 @@ _INDEX_HTML = """<!doctype html>
       const badge = make("span", data.inconclusive ? "Inconclusive" : `Confidence ${(data.confidence * 100).toFixed(0)}%`, data.inconclusive ? "badge warning" : "badge");
       titleRow.append(badge);
       top.append(titleRow, make("p", data.evidence_summary, "muted"));
-      top.append(make("p", `Provider: ${data.llm_provider}${data.llm_model ? ` · ${data.llm_model}` : ""}`, "muted"));
+      const provider = data.llm_provider === "Groq"
+        ? `Provider: Groq${data.llm_model ? ` · ${data.llm_model}` : ""}`
+        : `Provider: ${data.llm_provider} (offline fallback; not LLM-generated)`;
+      top.append(make("p", provider, "muted"));
       const hypothesisList = make("div");
       for (const h of data.ranked_hypotheses || []) {
         const item = make("article", undefined, "hypothesis");
@@ -152,7 +156,18 @@ def _serialize_report(incident_id: str) -> dict[str, Any]:
     incident = _INCIDENTS_BY_ID.get(incident_id)
     if incident is None:
         raise KeyError(incident_id)
-    return asdict(Orchestrator(incident).investigate())
+    orchestrator = Orchestrator(incident)
+    offline_explicitly_enabled = os.getenv("ORANGE_LLM_DISABLED", "").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
+    if not orchestrator.llm.enabled and not offline_explicitly_enabled:
+        raise RuntimeError(
+            "Groq is not enabled. Configure GROQ_API_KEY, or explicitly use --offline "
+            "to run the labeled deterministic fallback."
+        )
+    return asdict(orchestrator.investigate())
 
 
 class IncidentRequestHandler(BaseHTTPRequestHandler):
