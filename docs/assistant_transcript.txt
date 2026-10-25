@@ -1,28 +1,28 @@
 CHAT TRANSCRIPT
 ## Reconstructed AI-assistance context and prompts
 
-**Project context:** I worked on a Python project for investigating simulated production incidents. It uses an orchestrator and separate observability, dependency, reasoning, critic, and reporting agents. The project includes ten synthetic incidents, a single-agent comparison, an evaluation script, and a local web UI. The reasoning flow can use Groq with an API key stored locally in `.env`; the app also has an offline mode with a local fallback. The incidents are simulated and are not connected to a real production monitoring system.
+**Project context: I worked on a Python project for investigating simulated production incidents. It uses an orchestrator and separate observability, dependency, reasoning, critic, and reporting agents. The project includes ten synthetic incidents, a single-agent comparison, an evaluation script, and a local web UI. The reasoning flow can use Groq with an API key stored locally in `.env`; the app also has an offline mode with a local fallback. The incidents are simulated and are not connected to a real production monitoring system.
 
 **Representative prompts I used:**
 
-1. “Review the assignment requirements and help me break them into a practical implementation plan. Identify the main components, expected outputs, and how I can demonstrate that the project meets the requirements.”
+1. Review the assignment requirements and help me break them into a practical implementation plan. Identify the main components, expected outputs, and how I can demonstrate that the project meets the requirements.
 
-2. “Help me structure a Python incident-investigation project with an orchestrator and separate observability, dependency, reasoning, critic, and reporting agents. Keep the responsibilities of each component clear.”
+2. Help me structure a Python incident-investigation project with an orchestrator and separate observability, dependency, reasoning, critic, and reporting agents. Keep the responsibilities of each component clear.
 
-3. “Help me create a small set of synthetic production incidents with evidence that the agents can analyze. Keep the data realistic enough for a demonstration, and make sure expected answers used for evaluation are not passed to the agents.”
+3. Help me create a small set of synthetic production incidents with evidence that the agents can analyze. Keep the data realistic enough for a demonstration, and make sure expected answers used for evaluation are not passed to the agents.
 
-4. “Help me implement the investigation flow so the agents use the incident evidence to suggest causes and produce a final report. Keep the outputs understandable and suitable for a project demo.”
+4. Help me implement the investigation flow so the agents use the incident evidence to suggest causes and produce a final report. Keep the outputs understandable and suitable for a project demo.
 
-5. “Help me connect the reasoning flow to Groq. Read the API key from an environment variable loaded locally, and avoid putting secrets in source code or committing them.”
+5. Help me connect the reasoning flow to Groq. Read the API key from an environment variable loaded locally, and avoid putting secrets in source code or committing them.
 
-6. “Help me add an evaluation script that compares the multi-agent approach with a single-agent baseline. Use the expected incident answers only for scoring, not as input to either approach.”
+6. Help me add an evaluation script that compares the multi-agent approach with a single-agent baseline. Use the expected incident answers only for scoring, not as input to either approach.
 
-7. “Help me build a small local web UI for running an incident investigation and viewing the report. Make the main flow easy to demonstrate.”
+7. Help me build a small local web UI for running an incident investigation and viewing the report. Make the main flow easy to demonstrate.
 
-8. “Help me troubleshoot the Groq integration and rate-limit issues. Explain the likely cause and suggest changes that preserve the existing project behavior.”
+8. Help me troubleshoot the Groq integration and rate-limit issues. Explain the likely cause and suggest changes that preserve the existing project behavior.
 
-9. “Help me add an offline mode for the UI so it can be demonstrated without Groq access. Clearly distinguish local fallback results from LLM-generated results.”
+9. Help me add an offline mode for the UI so it can be demonstrated without Groq access. Clearly distinguish local fallback results from LLM-generated results.
 
-10. “Review the main project behavior and help me add or update tests for the investigation flow, evaluation behavior, and offline mode. Run the relevant tests and explain any failures.”
+10. Review the main project behavior and help me add or update tests for the investigation flow, evaluation behavior, and offline mode. Run the relevant tests and explain any failures.
 
 
